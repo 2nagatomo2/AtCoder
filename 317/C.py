@@ -1,6 +1,6 @@
 # dfs(深さ優先探索)を使用して実装
 # CPythonでは通らなかったがPyPyでは通った
-#この二つの違い何？？
+# この二つの違い何？？
 N, M = map(int, input().split())
 
 G = [[0] * (N+1) for _ in range(N+1)]

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 using namespace std;
 
 int N, M;
@@ -24,8 +25,11 @@ int main() {
     cin >> N >> M;
     for (int i = 0; i < M; i++) {
         cin >> a >> b >> c;
+        a--;
+        b--;
         G[a][b] = c;
         G[b][a] = c;
+        cout << G[a][b] << endl;
     }
     for (int i = 1; i < N; i++) {
         dfs(i, 0);
