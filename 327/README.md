@@ -1,20 +1,25 @@
-<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-<script type="text/x-mathjax-config">
- MathJax.Hub.Config({
- tex2jax: {
- inlineMath: [['$', '$'] ],
- displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
- }
- });
-</script>
-
 # A問題
 - C++では文字からASCIIへの変換は
-char word = 'a';
-int ascii = int(word);
-のように、charをintに変換するとできる
+    ```c++
+    char word = 'a'; 
+    int ascii = int(word);
+    ```
+    のように、charをintに変換するとできる.(問題とは関係ないけど。)
 
 # B問題
+- c++では
+    ```c++
+    std::pow(15, 15)
+    ```
+    で15の15乗を計算すると、誤差が発生する。
+    これはpow関数ではdouble型が使用されており、数字が大きくなると誤差が生じるためである。
 
+    long double型を扱える
+    ```
+    powl(15, 15)
+    ```
+    も存在するが今回は1つのテストケースでエラーが発生する。
+
+    コンテストでc++で冪乗を扱うときはfor文で書くのが無難か。
+    
 # C問題

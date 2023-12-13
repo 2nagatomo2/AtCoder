@@ -12,6 +12,7 @@ using namespace std;
 int main() {
     ll B;
     cin >> B;
+    
     for (int i=1; i<=15; i++) {
         ll A = 1;
         rep (j, i) A *= i;
@@ -20,6 +21,7 @@ int main() {
             exit(0);
         } 
     }
+    
     cout << -1 << endl;
     return 0;
 }
