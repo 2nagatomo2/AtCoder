@@ -1,40 +1,48 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stack>
+#include <map>
+#include <queue>
 using namespace std;
 
-int N, M;
-int a, b, c;
-vector<int> G[11];
-bool visited[11];
-int ans;
+#define rep(i, n) for(int i=0; i<n; i++)
+#define ll long long
 
-void dfs(int pos, int sum) {
+struct Edge {
+    int to, cost, dist;
+    Edge(int to=0, int cost=0): to(to), cost(cost) {}
+};
+
+int ans;
+vector<bool> visited(11, false);
+
+void dfs(vector<vector<Edge> > &g, int &pos, int dist) {
     visited[pos] = true;
-    ans = max(ans, sum);
-    for (int i = 1; i < N; i++) {
-        if (visited[i] == false && G[pos][i]) {
-            int nex = i;
-            dfs(i, sum + G[pos][i]);
+    ans = max(ans, dist);
+    for(auto v : g[pos]) {
+        if(!visited[v.to]) {
+            dfs(g, v.to, dist+v.cost);
         }
     }
-    return;
+    visited[pos] = false;
 }
 
 int main() {
-    cin >> N >> M;
-    for (int i = 0; i < M; i++) {
+    int n, m;
+    cin >> n >> m;
+    int a, b, c;
+    vector<vector<Edge> > g(n);
+
+    rep(i, m) {
         cin >> a >> b >> c;
         a--;
         b--;
-        G[a][b] = c;
-        G[b][a] = c;
-        cout << G[a][b] << endl;
-    }
-    for (int i = 1; i < N; i++) {
-        dfs(i, 0);
+        g[a].emplace_back(b, c);
+        g[b].emplace_back(a, c);
     }
 
+    rep(i, n) dfs(g, i, 0);
     cout << ans << endl;
     return 0;
 }
