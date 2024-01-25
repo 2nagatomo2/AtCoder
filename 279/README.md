@@ -13,3 +13,4 @@
 ```c++
     cout << fixed << setprecision(10) << ans << endl;
 ```
+- 参考: https://qiita.com/ryupim/items/1cbeb860d4a2f056358a
