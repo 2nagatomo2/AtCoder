@@ -8,41 +8,37 @@ using namespace std;
 #define ll long long
 
 #define rep(i,n) for (int i=0; i<(n); i++)
+#define REP(i,b,n) for(int i=b; i<(n); i++)
+#define chmax(a, b) a = max(a, b)
+#define chmin(a, b) a = min(a, b)
 
 int main() {
-    int n;
-    cin >> n;
-    ll x[n], y[n], z[n];
-    ll t = 0, a = 0;
-    vector<pair<ll,ll> > v;
-    rep(i, n) {
-        cin >> x[i] >> y[i] >> z[i];
-        if(x[i] > y[i]) {
-            t += z[i];
-        } else {
-            a += z[i];
-            v.push_back(make_pair((y[i] - x[i] + 1) / 2, -z[i]));
+    int N;
+    cin >> N;
+    vector<int> X(N);
+    vector<int> Y(N);
+    vector<int> Z(N);
+    int sum_Z = 0;
+    rep(i, N) {
+        cin >> X[i] >> Y[i] >> Z[i];
+        sum_Z += Z[i];
+    }
+
+    const ll INF = 1e12;
+    vector<vector<ll>> dp(N+1, vector<ll>(sum_Z+1, INF));
+    dp[0][0] = 0;
+    for(int i = 1; i <= N; i++) {
+        for(int j = 0; j <= sum_Z; j++) {
+            if(dp[i-1][j] != INF) {
+                chmin(dp[i][j], dp[i-1][j]);
+                chmin(dp[i][j+Z[i-1]], dp[i-1][j] + max(0, (Y[i-1] - X[i-1]) / 2 + 1));
+            }
         }
     }
 
-    sort(v.begin(), v.end());
-    rep(i, v.size()) cout << v[i].first << ' ' << v[i].second << endl;
-    ll ans = 10000000000;
-    if(t > a) ans = 0;
-    else {
-        ll person, giseki;
-        rep(i, v.size()) {
-            person = 0;
-            giseki = 0;
-            for(int j=i; j<v.size(); j++) {
-                person += v[j].first;
-                giseki -= v[j].second;
-                if(t + giseki > a - giseki) {
-                    ans = min(ans, person);
-                    break;
-                }
-            }
-        }
+    ll ans = INF;
+    REP(i, (sum_Z+1) / 2, sum_Z+1) {
+        chmin(ans, dp[N][i]);
     }
 
     cout << ans << endl;
