@@ -16,15 +16,29 @@ int main() {
         b[i] = a[i];
     }
     sort(b, b+n);
+    map<int, map<int, int>> mp_a;
+    map<int, map<int, int>> mp_b;
     rep(i, n) {
-        int l = lower_bound(b, b+n, a[i]) - b;
-        int r = upper_bound(b, b+n, a[i]) - b - 1;
-        cout << l << ' ' << r << endl;
-        if(((l-i) % k) >= l && ((r-i) % k) < r) continue;
-        else {
-            cout << i << endl;
-            cout << "No" << endl;
-            return 0;
+        mp_a[a[i]][i % k]++;
+        mp_b[b[i]][i % k]++;
+    }
+
+    // for(auto itr = mp_a.begin(); itr != mp_a.end(); itr++) {
+    //     int num = itr->first;
+    //     for(auto itr2 = mp_a[num].begin(); itr2 != mp_a[num].end(); itr2++) {
+    //         int idx = itr2->first;
+    //         cout << num << ' ' << idx << ' ' << mp_a[num][idx] << ' ' << mp_b[num][idx] << endl;
+    //     }
+    // }
+
+    for(auto itr = mp_a.begin(); itr != mp_a.end(); itr++) {
+        int num = itr->first;
+        for(auto itr2 = mp_a[num].begin(); itr2 != mp_a[num].end(); itr2++) {
+            int idx = itr2->first;
+            if(mp_a[num][idx] != mp_b[num][idx]) {
+                cout << "No" << endl;
+                return 0;
+            }
         }
     }
     cout << "Yes" << endl;
