@@ -1,0 +1,93 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define ull unsigned long long
+#define ll long long
+#define ld long double
+
+#define rep(i,n) for (int i=0; i<(n); i++)
+#define REP(i,b,n) for(int i=b; i<(n); i++)
+#define chmax(a, b) a = max(a, b)
+#define chmin(a, b) a = min(a, b)
+#define pll pair<ll, ll>
+#define pii pair<int, int>
+#define fi first
+#define se second
+#define all(x) x.begin(),x.end()
+
+const ll INF = (1LL << 60);
+
+// 辺の情報
+struct Edge
+{
+    // 行先
+    ll to;
+
+    // コスト
+    ll cost;
+};
+
+#define Graph vector<vector<Edge>>
+
+// { distance, from }
+#define pll pair<ll, ll>
+
+// ダイクストラ法
+// distances は頂点数と同じサイズ, 全要素 INF で初期化しておく
+void Dijkstra(const Graph& graph, vector<ll>& distances, int startIndex) {
+
+    // 「現時点での最短距離, 頂点」の順に取り出す priority_queue
+    // デフォルトの priority_queue は降順に取り出すため greater を使う
+    priority_queue<pll, vector<pll>, greater<pll>> q;
+    q.emplace((distances[startIndex] = 0), startIndex);
+
+    while (!q.empty()) {
+        const ll distance = q.top().first;
+        const int from = q.top().second;
+        q.pop();
+
+        // 最短距離でなければ処理しない
+        if (distances[from] < distance) {
+            continue;
+        }
+
+        // 現在の頂点からの各辺について
+        for (const auto& edge : graph[from]) {
+            // to までの新しい距離
+            const ll d = (distances[from] + edge.cost);
+
+            // d が現在の記録より小さければ更新
+            if (d < distances[edge.to]) {
+                q.emplace((distances[edge.to] = d), edge.to);
+            }
+        }
+    }
+}
+
+
+int main() {
+    int n;
+    ll a, b, c, d;
+    cin >> n >> a >> b >> c;
+    Graph graph1(n);
+    Graph graph2(n);
+    vector<ll> distanceFromStart(n, INF);
+    vector<ll> distanceToEnd(n, INF);
+    rep(i, n) rep(j, n) {
+        cin >> d;
+        if(i != j) {
+            graph1[i].push_back({j, a * d});
+            graph2[i].push_back({j, b * d + c});
+        }
+    }
+
+    Dijkstra(graph1, distanceFromStart, 0);
+    Dijkstra(graph2, distanceToEnd, n-1);
+
+    ll ans = INF;
+    rep(i, n) {
+        chmin(ans, distanceFromStart[i] + distanceToEnd[i]);
+    }
+    cout << ans << endl;
+    return 0;
+}
